@@ -8,12 +8,12 @@ from bs4 import BeautifulSoup
 import json
 import os
 
-# Initialize the main window
+
 root = tk.Tk()
 root.title("DataScraper")
 root.geometry("850x850")
 
-# Apply a "Darkly" theme style
+
 style = ttk.Style()
 style.theme_use("clam")
 style.configure(
@@ -44,7 +44,7 @@ style.configure(
     font=("Helvetica", 10)
 )
 
-# Function to open a new empty "Scanner" window
+
 def open_scanner_window():
     scanner_window = tk.Toplevel(root)
     scanner_window.title("Scanner")
@@ -52,30 +52,25 @@ def open_scanner_window():
     scanner_label = ttk.Label(scanner_window, text="Scanner Window", font=("Helvetica", 16))
     scanner_label.pack(pady=20)
 
-# Adding the main white navbar at the top
+
 navbar = tk.Frame(root, bg="white", height=50)
 navbar.pack(side="top", fill="x")
 
-# Load the images
 scanner_image_path = "scanner.png"  # Replace with your scanner image path
 
 scanner_img = Image.open(scanner_image_path).resize((20, 20))
 scanner_icon = ImageTk.PhotoImage(scanner_img)
 
-# Add buttons to the navbar
 scanner_button = tk.Button(navbar, image=scanner_icon, bg="white", relief="flat", command=open_scanner_window)
 scanner_button.image = scanner_icon
 scanner_button.pack(side="left", padx=10, pady=5)
 
-# Create the main frame
 frame = ttk.Frame(root, padding=10)
 frame.pack(fill="both", expand=True)
 
-# Add a title label
 label_title = ttk.Label(frame, text="Scrape any website", font=("Helvetica", 16, "bold"))
 label_title.pack(pady=10)
 
-# Add input fields
 label_url = ttk.Label(frame, text="Target URL")
 label_url.pack(pady=5)
 entry_url = ttk.Entry(frame, width=650)
@@ -96,7 +91,6 @@ treeview = ttk.Treeview(frame, columns=("Element",))
 treeview.column("Element", width=450)
 treeview.pack(pady=10)
 
-# Function for button click (scrape data)
 def on_button_click():
     url = entry_url.get()
     element = entry_name.get()
@@ -124,13 +118,11 @@ def search_data(url, element, class_):
     label_result_count.config(text=f"Results Found: {result_count}")
     update_data_count()
 
-# Function to clear the Treeview
 def clear_treeview():
     for row in treeview.get_children():
         treeview.delete(row)
     label_result_count.config(text="Results Found: 0")
 
-# Function to save the collected data to a file
 def save_to_file():
     filename = entry_txt_filename.get()
     file_extension = file_extension_choice.get()
@@ -151,30 +143,24 @@ def save_to_file():
     messagebox.showinfo("Data Saved", f"Data has been successfully saved to {filename}.")
     update_data_count()
 
-# Function to update the count of saved data
 def update_data_count():
     saved_files = [f for f in os.listdir() if f.endswith(('.txt', '.json'))]
     data_count = len(saved_files)
     label_data_count.config(text=f"Data Entries Saved: {data_count}")
 
-# Function to open the folder containing saved data files
 def open_saved_data_folder():
     folder_path = os.getcwd()
     filedialog.askdirectory(initialdir=folder_path, title="Open Saved Data Folder")
 
-# Add label to display the count of results
 label_result_count = ttk.Label(frame, text="Results Found: 0", font=("Helvetica", 12, "bold"))
 label_result_count.pack(pady=1)
 
-# Add the "Clear Results" button
 button_clear_results = ttk.Button(frame, text="Clear Results", command=clear_treeview)
 button_clear_results.pack(pady=1)
 
-# Add a submit button for scraping
 button_submit = ttk.Button(frame, width=30, text="Start The Scraper", command=on_button_click)
 button_submit.pack(pady=30)
 
-# Create a frame for input, file extension choice, and buttons
 bottom_frame = ttk.Frame(frame)
 bottom_frame.pack(pady=1, fill="x")
 
@@ -199,6 +185,4 @@ label_data_count.pack(pady=10)
 button_open_folder = ttk.Button(frame, text="Open Saved Data Folder", command=open_saved_data_folder)
 button_open_folder.pack(pady=10)
 
-
-# Run the application
 root.mainloop()
